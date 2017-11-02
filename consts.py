@@ -19,3 +19,12 @@ class Consts:
     }
 
     NUMBER_OF_ACTIONS = 4
+
+    TRAJECTORY_LENGTH = 1e5
+
+    ACTION_CODES = {
+        ACTION_UP: 0.0,
+        ACTION_DOWN: 0.25,
+        ACTION_LEFT: 0.5,
+        ACTION_RIGHT: 1.0
+    }

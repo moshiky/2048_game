@@ -1,4 +1,5 @@
 
+import numpy as np
 import random
 from consts import Consts
 
@@ -212,3 +213,12 @@ class Board:
 
     def get_current_score(self):
         return self.__current_score
+
+    def vectorize_board(self):
+        board_vector = np.array(self.__board_size * self.__board_size, dtype=np.float32)
+        for i in range(self.__board_size):
+            for j in range(self.__board_size):
+                board_vector[i * self.__board_size + j * self.__board_size] = \
+                    self.__board_size[i][j] / float(Consts.WIN_CELL_VALUE)
+
+        return board_vector
