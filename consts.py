@@ -20,7 +20,8 @@ class Consts:
 
     NUMBER_OF_ACTIONS = 4
 
-    TRAJECTORY_LENGTH = 1e5
+    TRAJECTORY_MAX_LENGTH = 1e5
+    SHRINK_FACTOR = 1e2
 
     ACTION_CODES = {
         ACTION_UP: 0.0,
