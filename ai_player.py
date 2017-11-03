@@ -23,11 +23,10 @@ class AIPlayer(IPlayer):
         highest_value = None
         best_action_list = list()
         for action in Consts.ACTION_CODES.keys():
-            state_action = np.append(current_state, Consts.ACTION_CODES[action])
-            pair_value = self.__q_net.predict(state_action)
+            pair_value = self.__q_net.predict(current_state, action)
 
-            if pair_value >= highest_value or highest_value is None:
-                if pair_value > highest_value or highest_value is None:
+            if highest_value is None or pair_value >= highest_value:
+                if highest_value is None or pair_value > highest_value:
                     best_action_list = list()
                     highest_value = pair_value
                 best_action_list.append(action)

@@ -2,8 +2,11 @@
 import random
 from logger import Logger
 from board import Board
-from human_player import HumanPlayer
-from random_player import RandomPlayer
+# from human_player import HumanPlayer
+# from random_player import RandomPlayer
+from ai_player import AIPlayer
+from q_learn_agent import QLearnAgent
+from q_table_net import QTableNet
 
 
 def main(logger):
@@ -20,6 +23,12 @@ def main(logger):
     largest_cell_dict = dict()
     wins_counter = 0
 
+    # create q table net
+    q_net = QTableNet(logger)
+
+    # create learning agent
+    q_agent = QLearnAgent(logger, q_net)
+
     # run episodes
     for i in range(max_iterations_to_run):
 
@@ -29,19 +38,36 @@ def main(logger):
 
         # init local variables
         game_board = Board(logger)
-        player = RandomPlayer(logger)
+        player = AIPlayer(logger, q_net)
         steps_counter = 0
 
+        # save current state
+        last_state = game_board.vectorize_board()
+
         # monitor game
-        while not game_board.is_game_over():
+        while True:
 
             # let the player play
-            state_changed = player.act(game_board)
+            selected_action, state_changed = player.act(game_board)
             steps_counter += 1
 
-            # check for win condition
+            # get current board state
+            current_state = game_board.vectorize_board()
+
+            # evaluate current state type and update table accordingly
             if game_board.is_win_state():
+                q_agent.add_sample(last_state, selected_action, 1.0, current_state, is_final_state=True)
                 break
+
+            elif game_board.is_game_over():
+                q_agent.add_sample(last_state, selected_action, -1.0, current_state, is_final_state=True)
+                break
+
+            else:
+                q_agent.add_sample(last_state, selected_action, 0.0, current_state, is_final_state=False)
+
+            # store current state as last state
+            last_state = current_state
 
             # in case the board changed- add one new cell
             if state_changed:

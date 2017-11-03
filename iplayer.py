@@ -17,4 +17,4 @@ class IPlayer(object, metaclass=abc.ABCMeta):
 
         # apply the selected action on the board and return its return value-
         # whether the board state changed or not
-        return board.perform_action(selected_action)
+        return selected_action, board.perform_action(selected_action)

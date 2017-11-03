@@ -215,10 +215,9 @@ class Board:
         return self.__current_score
 
     def vectorize_board(self):
-        board_vector = np.array(self.__board_size * self.__board_size, dtype=np.float32)
+        board_vector = np.zeros((self.__board_size * self.__board_size), dtype=np.float32)
         for i in range(self.__board_size):
             for j in range(self.__board_size):
-                board_vector[i * self.__board_size + j * self.__board_size] = \
-                    self.__board_size[i][j] / float(Consts.WIN_CELL_VALUE)
+                board_vector[i * self.__board_size + j] = self.__board[i][j] / float(Consts.WIN_CELL_VALUE)
 
         return board_vector
